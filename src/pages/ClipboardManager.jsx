@@ -94,8 +94,8 @@ function SortableItem({
                 onClick={(e) => onTogglePin(e, item.id)}
                 onPointerDown={(e) => e.stopPropagation()}
                 className={`shrink-0 p-1.5 rounded-full transition-colors ${item.pinned
-                        ? 'text-yellow-400 bg-yellow-400/10'
-                        : 'text-zinc-600 hover:text-zinc-400 hover:bg-zinc-800'
+                    ? 'text-yellow-400 bg-yellow-400/10'
+                    : 'text-zinc-600 hover:text-zinc-400 hover:bg-zinc-800'
                     }`}
                 title={item.pinned ? "Unpin" : "Pin"}
             >
@@ -158,8 +158,8 @@ function SortableItem({
                     onClick={(e) => onToggleEdit(e, item.id)}
                     onPointerDown={(e) => e.stopPropagation()}
                     className={`p-2 rounded-lg transition-colors ${isEditing
-                            ? 'bg-blue-600 text-white hover:bg-blue-500'
-                            : 'text-zinc-400 hover:text-white hover:bg-zinc-700'
+                        ? 'bg-blue-600 text-white hover:bg-blue-500'
+                        : 'text-zinc-400 hover:text-white hover:bg-zinc-700'
                         }`}
                     title={isEditing ? "Done" : "Edit"}
                 >
@@ -285,7 +285,11 @@ export default function ClipboardManager() {
 
     const toggleEdit = (e, id) => {
         if (e) e.stopPropagation();
-        setEditingId(editingId === id ? null : id);
+        if (editingId === id) {
+            handleSave();
+        } else {
+            setEditingId(id);
+        }
     };
 
     // Sorting Logic
@@ -373,10 +377,10 @@ export default function ClipboardManager() {
                         <button
                             onClick={handleSave}
                             className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#09090b] ${isSaved
-                                    ? 'bg-green-600 hover:bg-green-500 text-white focus:ring-green-600'
-                                    : hasUnsavedChanges
-                                        ? 'bg-white hover:bg-zinc-200 text-black focus:ring-white'
-                                        : 'bg-zinc-100 text-black hover:bg-zinc-200'
+                                ? 'bg-green-600 hover:bg-green-500 text-white focus:ring-green-600'
+                                : hasUnsavedChanges
+                                    ? 'bg-white hover:bg-zinc-200 text-black focus:ring-white'
+                                    : 'bg-zinc-100 text-black hover:bg-zinc-200'
                                 }`}
                         >
                             {isSaved ? "Saved" : "Save Changes"}
@@ -393,8 +397,8 @@ export default function ClipboardManager() {
                                 key={type}
                                 onClick={() => setSortBy(type)}
                                 className={`px-3 py-1.5 rounded-md capitalize transition-all ${sortBy === type
-                                        ? 'bg-zinc-700 text-white shadow-sm'
-                                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
+                                    ? 'bg-zinc-700 text-white shadow-sm'
+                                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
                                     }`}
                             >
                                 {type === 'date' ? 'Date Created' : type}
