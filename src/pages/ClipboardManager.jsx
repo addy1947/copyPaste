@@ -41,7 +41,6 @@ const setCookie = (data) => {
     document.cookie = COOKIE_NAME + "=" + value + ";" + expires + ";path=/";
 };
 
-// --- Sortable Item Component ---
 function SortableItem({
     item,
     isEditing,
@@ -51,7 +50,7 @@ function SortableItem({
     onChange,
     onToggleEdit,
     onDelete,
-    isActive // specialized prop to style the dragging item specifically if needed
+    isActive
 }) {
     const {
         attributes,
@@ -69,7 +68,6 @@ function SortableItem({
         position: 'relative',
     };
 
-    // If dragging, we might want to hide the original or style it
     const itemContent = (
         <div
             ref={setNodeRef}
@@ -88,8 +86,6 @@ function SortableItem({
                 }
             `}
         >
-            {/* Pin Indicator/Action - Stop Propagation to prevent drag start on button? 
-                 Actually utilizing PointerSensor delay helps, but buttons should stop propagation usually. */}
             <button
                 onClick={(e) => onTogglePin(e, item.id)}
                 onPointerDown={(e) => e.stopPropagation()}
@@ -104,7 +100,6 @@ function SortableItem({
                 </svg>
             </button>
 
-            {/* Label Section */}
             <div className="w-full sm:w-1/4">
                 {isEditing ? (
                     <input
@@ -123,10 +118,8 @@ function SortableItem({
                 )}
             </div>
 
-            {/* Divider */}
             <div className="hidden sm:block w-px h-6 bg-zinc-800"></div>
 
-            {/* Value Section */}
             <div className="flex-1 w-full min-w-0 pr-2">
                 {isEditing ? (
                     <input
@@ -152,7 +145,6 @@ function SortableItem({
                 )}
             </div>
 
-            {/* Actions (Edit/Delete) */}
             <div className="flex items-center gap-2 sm:ml-auto shrink-0">
                 <button
                     onClick={(e) => onToggleEdit(e, item.id)}
@@ -186,7 +178,6 @@ function SortableItem({
                 </button>
             </div>
 
-            {/* Drag Handle Indicator (Visual only, whole row is triggered by delay) */}
             <div className="hidden group-hover:block absolute left-1 top-1/2 -translate-y-1/2 text-zinc-600">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -206,14 +197,11 @@ export default function ClipboardManager() {
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [sortBy, setSortBy] = useState('custom');
-    const [activeId, setActiveId] = useState(null); // For drag overlay
+    const [activeId, setActiveId] = useState(null);
 
-    // Sensors Configuration
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
-                // Require a press-and-hold of 150ms to start dragging
-                // This allows short clicks to trigger "Copy"
                 delay: 150,
                 tolerance: 5,
             },
@@ -292,7 +280,6 @@ export default function ClipboardManager() {
         }
     };
 
-    // Sorting Logic
     const getSortedItems = () => {
         let sorted = [...items];
 
@@ -315,10 +302,8 @@ export default function ClipboardManager() {
         return [...pinned, ...unpinned];
     };
 
-    // Derived state for DnD
     const visibleItems = getSortedItems();
 
-    // Drag Handlers
     const handleDragStart = (event) => {
         setActiveId(event.active.id);
     };
@@ -329,34 +314,24 @@ export default function ClipboardManager() {
 
         if (active.id !== over?.id) {
             setItems((prevItems) => {
-                // We need to reorder the *original* items array based on the visual change
-                // First, map visible IDs
                 const oldIndex = visibleItems.findIndex(i => i.id === active.id);
                 const newIndex = visibleItems.findIndex(i => i.id === over.id);
-
-                // If we are just moving things, we can use arrayMove on 'visibleItems' logic
-                // But we must construct the new full list.
-                // Simpler: perform the move on visibleItems, then concat back if there were hidden items?
-                // Here all items are likely visible, just sorted.
-                // If sorted by 'name', dragging breaks sort -> custom.
 
                 const newVisible = arrayMove(visibleItems, oldIndex, newIndex);
 
                 return newVisible;
             });
             setHasUnsavedChanges(true);
-            setSortBy('custom'); // Auto-switch to custom
+            setSortBy('custom');
         }
     };
 
-    // Find active item object for overlay
     const activeItem = activeId ? items.find(i => i.id === activeId) : null;
 
     return (
         <div className="min-h-screen bg-[#09090b] text-zinc-100 font-sans selection:bg-zinc-800">
             <div className="max-w-4xl mx-auto px-6 py-12">
 
-                {/* Header */}
                 <header className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
                     <div>
                         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">
@@ -388,7 +363,6 @@ export default function ClipboardManager() {
                     </div>
                 </header>
 
-                {/* Sort Controls */}
                 <div className="flex items-center gap-4 mb-6 text-sm">
                     <span className="text-zinc-500 font-medium">Sort by:</span>
                     <div className="flex gap-1 bg-[#121214] p-1 rounded-lg border border-zinc-800">
@@ -405,13 +379,11 @@ export default function ClipboardManager() {
                             </button>
                         ))}
                     </div>
-                    {/* Instructions hint */}
                     <span className="ml-auto text-xs text-zinc-600 hidden md:block">
                         Hold row to reorder
                     </span>
                 </div>
 
-                {/* List Section */}
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
@@ -445,7 +417,6 @@ export default function ClipboardManager() {
                         </div>
                     </SortableContext>
 
-                    {/* Drag Overlay for smooth visual feedback */}
                     <DragOverlay>
                         {activeItem ? (
                             <div className="flex items-center gap-4 p-4 rounded-xl border border-zinc-500 bg-zinc-800 shadow-2xl scale-105 opacity-90 cursor-grabbing">
