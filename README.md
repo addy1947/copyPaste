@@ -1,17 +1,54 @@
-# React + Vite
+# Quick Copy - Smart Clipboard Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, aesthetic, and persistent clipboard manager built with React, Vite, and Tailwind CSS. Organizes your important links and text snippets with reorderable lists, pinning, and instant copy/save functionality.
 
-Currently, two official plugins are available:
+![ScreenShot](https://via.placeholder.com/800x400?text=Quick+Copy+Interface)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **📋 One-Click Copy**: Click any row to instantly copy its content to your clipboard.
+- **💾 Persistence**: Automatically saves your data to browser cookies/local storage, surviving page refreshes.
+- **📌 Pinning System**: Pin important items to the top of your list for quick access.
+- **🔄 Drag & Drop**: Reorder your items intuitively by holding and dragging (powered by `@dnd-kit`).
+- **✏️ Inline Editing**: Edit labels and values directly within the list.
+- **📂 Smart Sorting**: Sort by Name, Date Created, or Custom order.
+- **🎨 Premium UI**: A sleek, dark-themed interface designed with glassmorphism and smooth animations.
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework**: [React](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Heroicons](https://heroicons.com/)
+- **Drag & Drop**: [@dnd-kit/core](https://dndkit.com/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# copyPaste
+## Getting Started
+
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd copy-paste
+    ```
+
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+
+4.  Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal).
+
+## Usage Guide
+
+- **Add Item**: Click the "+ Add Entry" button at the top.
+- **Edit**: Click the pencil icon on a row to edit text. Click the checkmark (or "Save Changes" button) to save.
+- **Reorder**: Click *and hold* a row for ~150ms to pick it up, then drag it to a new position.
+- **Delete**: Click the trash icon to remove an item.
+- **Save**: Changes are often saved automatically on action completion, or manually via the "Save Changes" button.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
